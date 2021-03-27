@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import './App.css';
 import { AutoCard } from "./componets/AutoCard/AutoCard"
 
@@ -16,13 +16,41 @@ let cars = [
   {id: 2, model : "auto10", age  : 2018, power : 3500, color : "#ff9638"}
 ];
 
-
 function App() {
+
+  const [arr,changeArr] = useState(cars);
+
+    const remove = (itemRemove) => {
+    if (itemRemove !== 'first' && itemRemove !== 'last' && itemRemove !== 'revert') return
+    const newArr = [...arr];
+
+    itemRemove === 'first' && newArr.shift();
+    itemRemove === 'last' && newArr.pop();
+    changeArr(newArr);
+
+  }
+
+    const onRevert = () => {
+      const clone = [...cars];
+      changeArr(clone);
+    }
+
   return (
     <div className="App">
-     {
-      cars.map(value => (<AutoCard {...value} key={value.id}/>))
+
+      <h3>Cars</h3>
+      <button onClick={()=> remove('first')}>Скрыть первое авто</button>
+      <button onClick={()=> remove('last')}>Скрыть последнее авто</button>
+      <button onClick={onRevert}>Отобразить все авто</button>
+      <ul>
+      {
+        arr.map (value => <li key={value.id}><AutoCard {...value}/></li>)
+
+      
       }
+      </ul>
+
+      
     
     </div>
   );

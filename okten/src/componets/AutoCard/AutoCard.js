@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./AutoCard.module.css"
 export const AutoCard = (props) =>{
-    console.log(props)
+    
     return (
       <div className={styles.card}>
         <h1>{props.model}</h1>
