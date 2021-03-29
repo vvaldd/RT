@@ -18,24 +18,74 @@ let cars = [
 
 function App() {
 
+  // const [arr,changeArr] = useState(cars);
+
+  //   const remove = (itemRemove) => {
+  //   if (itemRemove !== 'first' && itemRemove !== 'last' && itemRemove !== 'revert') return
+  //   const newArr = [...arr];
+
+  //   itemRemove === 'first' && newArr.shift();
+  //   itemRemove === 'last' && newArr.pop();
+  //   changeArr(newArr);
+
+  // }
+
+  //   const onRevert = () => {
+  //     const clone = [...cars];
+  //     changeArr(clone);
+  //   }
   const [arr,changeArr] = useState(cars);
 
-    const remove = (itemRemove) => {
-    if (itemRemove !== 'first' && itemRemove !== 'last' && itemRemove !== 'revert') return
-    const newArr = [...arr];
+  const [itemArr,setItem] = useState([]);
+  ;
 
-    itemRemove === 'first' && newArr.shift();
-    itemRemove === 'last' && newArr.pop();
-    changeArr(newArr);
+  const filteredArr = arr.filter(value=> !itemArr.includes(value.id))
+  
+
+  const handleArr = () => {
+    
+    const itemRemove = filteredArr[0];
+    if (!itemRemove) return;
+    setItem([...itemArr, itemRemove.id]);
+  }
+
+  const handleArr2 = () => {
+    
+    const itemRemove = filteredArr[filteredArr.length-1];
+    if (!itemRemove) return;
+    setItem([...itemArr, itemRemove.id]);
 
   }
 
-    const onRevert = () => {
-      const clone = [...cars];
-      changeArr(clone);
-    }
+  const handleArr3 = (value) => {
+    
+
+    if (!value) return;
+    setItem([...itemArr, value.id]);
+  }
+
+  const remove = () => {
+    setItem([]);
+  }
+
 
   return (
+    <div className="App">
+
+      <h3>Cars</h3>
+      <button onClick={handleArr}>Скрыть авто</button>
+      <button onClick={handleArr2}>Скрыть 2 авто</button>
+      <button onClick={remove}>Отобразить все</button>
+      
+      <ul>
+      {
+        filteredArr.map (value => <li key={value.id}><AutoCard {...value}/><button onClick={()=> handleArr3(value)}>Скрыть</button></li>)
+     
+      }
+      </ul>
+
+
+  {/* return (
     <div className="App">
 
       <h3>Cars</h3>
@@ -44,11 +94,11 @@ function App() {
       <button onClick={onRevert}>Отобразить все авто</button>
       <ul>
       {
-        arr.map (value => <li key={value.id}><AutoCard {...value}/></li>)
+        arr.map (value => <li key={value.id}><AutoCard {...value}/><button>Delete</button></li>)
 
       
       }
-      </ul>
+      </ul> */}
 
       
     
