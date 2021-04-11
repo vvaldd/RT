@@ -7,7 +7,8 @@ import {
     useParams,
     useRouteMatch,
     useLocation,
-    useHistory
+    useHistory,
+    Redirect
 } from "react-router-dom";
 
 function App() {
@@ -23,9 +24,6 @@ function App() {
                             <Link to="/posts">Posts</Link>
                         </li>
 
-                        {/*<li>*/}
-                        {/*    <Link to="/posts/:id">Post</Link>*/}
-                        {/*</li>*/}
 
                     </ul>
                 </nav>
@@ -36,9 +34,12 @@ function App() {
                         <Home />
                     </Route>
 
-                    <Route path="/posts" component={Posts} exact />
+                    <Route path="/posts" component={Posts} />
 
-                    <Route path="/posts/:id" component={PostDetails} />
+                    <Route>
+                        <h1>PAGE NOT FOUND</h1>
+                    </Route>
+
 
 
 
@@ -69,6 +70,14 @@ function Posts () {
 
     return (
         <div>
+            <Switch>
+                <Route path="/posts/:id" exact render={(...el) =>  <PostDetails />} />
+
+                <Route>
+                    <Redirect to="/posts" />
+                </Route>
+
+            </Switch>
             <ul>
                 {posts.map(el => <Link to={`/posts/${el.id}`}><li key={el.id}>{el.title} - {el.id}</li></Link>)}
             </ul>
@@ -102,8 +111,9 @@ function PostDetails () {
                 <h4>
                     {post.body}
                 </h4> </>)}
-            <button onClick={() => history.push(`/posts/${ +id +1 }`)}>Next post</button>
             <button onClick={() => history.push(`/posts/${ +id -1 }`)}>Previous post</button>
+            <button onClick={() => history.push(`/posts/${ +id +1 }`)}>Next post</button>
+
             </div>
     )
 }
