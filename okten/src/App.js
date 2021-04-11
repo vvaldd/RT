@@ -1,105 +1,111 @@
-import React, { useState } from "react";
-import './App.css';
-
-const BASE_URL = 'https://jsonplaceholder.typicode.com';
-const AVAILABLE_RESOURSE = [
-    'posts',
-    'comments',
-    'albums',
-    'photos',
-    'todos',
-    'users',
-]
+import React, {useState, useEffect} from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch,
+    useLocation,
+    useHistory
+} from "react-router-dom";
 
 function App() {
-    // const [endpoint, setEndpoint] = useState('')
-    // const [id, setId] = useState('')
-    const [endpointField, setEnpoitField] = useState({
-        endpoint: '',
-        id: '',
-    })
+    return (
+        <Router>
+            <div>
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to="/">Home</Link>
+                        </li>
+                        <li>
+                            <Link to="/posts">Posts</Link>
+                        </li>
 
-    const {endpoint, id} = endpointField;
-    const onFieldUpdate = ({target: {name, value}}) => setEnpoitField({...endpointField, [name]: value})
+                        {/*<li>*/}
+                        {/*    <Link to="/posts/:id">Post</Link>*/}
+                        {/*</li>*/}
 
-    const [items, setItem] = useState([])
-    const [singleItem, setSingleItem] = useState(null)
+                    </ul>
+                </nav>
 
-    const [errorMassege, setErrorMasage] = useState('')
+                <Switch>
 
-    const onSubmit = () => {
+                    <Route path="/" exact>
+                        <Home />
+                    </Route>
+
+                    <Route path="/posts" component={Posts} exact />
+
+                    <Route path="/posts/:id" component={PostDetails} />
 
 
-        if(!endpoint) {
-            return setErrorMasage('!endpoint');
-        }
 
-        if(!AVAILABLE_RESOURSE.includes(endpoint.trim().toLowerCase())) {
-            return setErrorMasage('includes');
-        }
+                </Switch>
+            </div>
+        </Router>
+    );
+}
 
-        if(!Number(id) && id !== '' && Number(id) !== 0) {
-            return setErrorMasage('No number or 0');
-        }
+function Home () {
 
-        if((Number(id) <1 || Number(id) >100) && id !=='') {
-            return setErrorMasage('1-100');
-        }
+    return <h2>Home</h2>;
+}
 
-        fetchData()
-        setErrorMasage('')
+function Posts () {
+    const[posts, setPosts] = useState([]);
+
+    const fetchData = async () => {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const data = await  response.json();
+
+        setPosts(data);
     }
 
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    return (
+        <div>
+            <ul>
+                {posts.map(el => <Link to={`/posts/${el.id}`}><li key={el.id}>{el.title} - {el.id}</li></Link>)}
+            </ul>
+        </div>
+    )
+}
+
+function PostDetails () {
+    const [post, setPost] = useState([]);
+
+    const match = useRouteMatch();
+    const { id } = useParams();
+    const location = useLocation();
+    const history = useHistory();
 
 
     const fetchData = async () => {
-        const response = await fetch(`${BASE_URL}/${endpoint.trim().toLowerCase()}/${id.trim()}`);
-        const json = await response.json();
+        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+        const data = await  response.json();
 
-        if(id) {
-            setSingleItem(json)
-            setItem([])
-            return
-        }
-
-        setSingleItem([])
-        setItem(json)
-
-        console.log(json);
+        setPost(data);
     }
 
-    return (
-        <div className="App">
-            <h3>Fetch</h3>
-            <input value={endpoint}
-                   onChange={onFieldUpdate}
-                   name='endpoint'
-                   type='text'
-                   placeholder='Please enter posts, comments, albums, photos, todos, users'/>
-            <br/>
-            <br/>
-            <input value={id}
-                   onChange={onFieldUpdate}
-                   name='id'
-                   type='text'
-                   placeholder='Enter resource id: 1,2,3..'/>
-            <br/>
-            <br/>
-            <button onClick={onSubmit}>Ok</button>
+    useEffect(() => {
+        fetchData()
+    }, [id])
 
-            <hr/>
-            <div>
-                {singleItem && JSON.stringify(singleItem)}
+    return ( <div>
+            <h1>Post</h1>
+            {post && (<>
+                <h4>
+                    {post.body}
+                </h4> </>)}
+            <button onClick={() => history.push(`/posts/${ +id +1 }`)}>Next post</button>
+            <button onClick={() => history.push(`/posts/${ +id -1 }`)}>Previous post</button>
             </div>
-
-            <hr/>
-            <div>
-                {items.map(value => (<div key={value.id}>{value.id} - {value.title}</div>))}
-            </div>
-
-            <h3>{errorMassege}</h3>
-        </div>
-    );
+    )
 }
 
 export default App;
