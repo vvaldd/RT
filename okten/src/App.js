@@ -1,121 +1,111 @@
-import React, {useState, useEffect} from "react";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useParams,
-    useRouteMatch,
-    useLocation,
-    useHistory,
-    Redirect
-} from "react-router-dom";
+import React, { useState } from "react";
+import './App.css';
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+const AVAILABLE_RESOURSE = [
+    'posts',
+    'comments',
+    'albums',
+    'photos',
+    'todos',
+    'users',
+]
 
 function App() {
-    return (
-        <Router>
-            <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/posts">Posts</Link>
-                        </li>
+    // const [endpoint, setEndpoint] = useState('')
+    // const [id, setId] = useState('')
+    const [endpointField, setEnpoitField] = useState({
+        endpoint: '',
+        id: '',
+    })
 
+    const {endpoint, id} = endpointField;
+    const onFieldUpdate = ({target: {name, value}}) => setEnpoitField({...endpointField, [name]: value})
 
-                    </ul>
-                </nav>
-
-                <Switch>
-
-                    <Route path="/" exact>
-                        <Home />
-                    </Route>
-
-                    <Route path="/posts" component={Posts} />
-
-                    <Route>
-                        <h1>PAGE NOT FOUND</h1>
-                    </Route>
-
-
-
-
-                </Switch>
-            </div>
-        </Router>
-    );
-}
-
-function Home () {
-
-    return <h2>Home</h2>;
-}
-
-function Posts () {
-    const[posts, setPosts] = useState([]);
-
-    const fetchData = async () => {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        const data = await  response.json();
-
-        setPosts(data);
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
+    const [items, setItem] = useState([])
+    const [singleItem, setSingleItem] = useState(null)
 
     return (
-        <div>
-            <Switch>
-                <Route path="/posts/:id" exact render={(...el) =>  <PostDetails />} />
+        <div className="App">
+            <h1>hello</h1>
 
-                <Route>
-                    <Redirect to="/posts" />
-                </Route>
-
-            </Switch>
-            <ul>
-                {posts.map(el => <Link to={`/posts/${el.id}`}><li key={el.id}>{el.title} - {el.id}</li></Link>)}
-            </ul>
         </div>
-    )
-}
+    );
+    const [errorMassege, setErrorMasage] = useState('')
 
-function PostDetails () {
-    const [post, setPost] = useState([]);
+    const onSubmit = () => {
 
-    const match = useRouteMatch();
-    const { id } = useParams();
-    const location = useLocation();
-    const history = useHistory();
+
+        if(!endpoint) {
+            return setErrorMasage('!endpoint');
+        }
+
+        if(!AVAILABLE_RESOURSE.includes(endpoint.trim().toLowerCase())) {
+            return setErrorMasage('includes');
+        }
+
+        if(!Number(id) && id !== '' && Number(id) !== 0) {
+            return setErrorMasage('No number or 0');
+        }
+
+        if((Number(id) <1 || Number(id) >100) && id !=='') {
+            return setErrorMasage('1-100');
+        }
+
+        fetchData()
+        setErrorMasage('')
+    }
+
 
 
     const fetchData = async () => {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-        const data = await  response.json();
+        const response = await fetch(`${BASE_URL}/${endpoint.trim().toLowerCase()}/${id.trim()}`);
+        const json = await response.json();
 
-        setPost(data);
+        if(id) {
+            setSingleItem(json)
+            setItem([])
+            return
+        }
+
+        setSingleItem([])
+        setItem(json)
+
+        console.log(json);
     }
 
-    useEffect(() => {
-        fetchData()
-    }, [id])
+    return (
+        <div className="App">
+            <h3>Fetch</h3>
+            <input value={endpoint}
+                   onChange={onFieldUpdate}
+                   name='endpoint'
+                   type='text'
+                   placeholder='Please enter posts, comments, albums, photos, todos, users'/>
+            <br/>
+            <br/>
+            <input value={id}
+                   onChange={onFieldUpdate}
+                   name='id'
+                   type='text'
+                   placeholder='Enter resource id: 1,2,3..'/>
+            <br/>
+            <br/>
+            <button onClick={onSubmit}>Ok</button>
 
-    return ( <div>
-            <h1>Post</h1>
-            {post && (<>
-                <h4>
-                    {post.body}
-                </h4> </>)}
-            <button onClick={() => history.push(`/posts/${ +id -1 }`)}>Previous post</button>
-            <button onClick={() => history.push(`/posts/${ +id +1 }`)}>Next post</button>
-
+            <hr/>
+            <div>
+                {singleItem && JSON.stringify(singleItem)}
             </div>
-    )
+
+            <hr/>
+            <div>
+                {items.map(value => (<div key={value.id}>{value.id} - {value.title}</div>))}
+            </div>
+
+            <h3>{errorMassege}</h3>
+        </div>
+    );
 }
 
 export default App;
