@@ -25,12 +25,6 @@ function App() {
     const [items, setItem] = useState([])
     const [singleItem, setSingleItem] = useState(null)
 
-    return (
-        <div className="App">
-            <h1>hello</h1>
-
-        </div>
-    );
     const [errorMassege, setErrorMasage] = useState('')
 
     const onSubmit = () => {
