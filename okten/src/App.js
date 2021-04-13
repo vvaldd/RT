@@ -1,25 +1,46 @@
-import React, { useState, createContext, useContext } from "react";
+import React, {useState, createContext, useContext} from "react";
 //import {Switch, Router, Route}
 import './App.css';
-import { Switch, BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import {Switch, BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
-const TodoConrext = createContext();
+const TodoContext = createContext();
 
 const TodoProvider = ({children}) => {
+    const [todos, setTodos] = useState([]);
 
+    const onTodoCreate = (newTodo) => {
+        if (!newTodo || !newTodo.title || !newTodo.description) return;
+
+        setTodos([newTodo, ...todos]);
+    }
 
     return (
-        <TodoConrext.Provider>
+        <TodoContext.Provider value={{
+            todos,
+            onTodoCreate
+        }}>
             {children}
 
-        </TodoConrext.Provider>
+        </TodoContext.Provider>
     )
 }
 
 
 const TodosList = () => {
+    const {
+        todos
+    } = useContext(TodoContext)
+
     return (
-        <h3>todos list</h3>
+        <>
+        {todos.map(el => (
+            <>
+            <h3>{el.title}</h3>
+            <hr/>
+            <p>{el.description}</p>
+            </>
+        ))}
+        </>
     )
 }
 
@@ -29,10 +50,18 @@ const AddTodo = () => {
         description: '',
     })
 
-    const onTodoChange = ({target: { name, value } }) => setTodoValues({ ...todoValues, [name]: value})
+    const {
+        todos,
+        onTodoCreate
+    } = useContext(TodoContext)
+
+    console.log(todos);
+
+    const onTodoChange = ({target: {name, value}}) => setTodoValues({...todoValues, [name]: value})
 
     const OnCreate = () => {
-        setTodoValues ({
+        onTodoCreate(todoValues)
+        setTodoValues({
             title: '',
             description: '',
         })
@@ -40,7 +69,8 @@ const AddTodo = () => {
     return (
         <div>
             <input value={todoValues.title} onChange={onTodoChange} type="text" name='title' placeholder="add todo"/>
-            <input value={todoValues.description} onChange={onTodoChange} type="text" name='description' placeholder="todo description"/>
+            <input value={todoValues.description} onChange={onTodoChange} type="text" name='description'
+                   placeholder="todo description"/>
 
             <button onClick={OnCreate}>add todo</button>
         </div>
@@ -49,7 +79,7 @@ const AddTodo = () => {
 }
 
 const Header = () => {
-    return(
+    return (
         <header>
             <Link to='/'>list</Link>
             <Link to='/create-todo'>add new todo</Link>
@@ -57,29 +87,32 @@ const Header = () => {
     )
 
 }
+
 function App() {
 
     return (
-        <main>
+        <TodoProvider>
+            <main>
 
-        <Router>
+                <Router>
 
-            <Header />
+                    <Header/>
 
-            <Switch>
+                    <Switch>
 
-                <Route path="/" exact>
-                    <TodosList />
-                </Route>
+                        <Route path="/" exact>
+                            <TodosList/>
+                        </Route>
 
-                <Route path='/create-todo'>
-                    <AddTodo />
-                </Route>
+                        <Route path='/create-todo'>
+                            <AddTodo/>
+                        </Route>
 
-            </Switch>
-        </Router>
+                    </Switch>
+                </Router>
 
-        </main>
+            </main>
+        </TodoProvider>
     );
 }
 
