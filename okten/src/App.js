@@ -53,7 +53,7 @@ store.dispatch({type: 'INC'})
 function App() {
 
     return (
-        <h3>Hi</h3>
+        <h3>Hi 7-1</h3>
     );
 }
 
