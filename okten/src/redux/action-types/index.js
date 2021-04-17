@@ -1,1 +1,1 @@
-export * from './counter-action-type'
+export * from './counter-action-type';
