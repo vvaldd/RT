@@ -1,6 +1,12 @@
 import './App.css';
-
+import {
+    incAction,
+    incCustomAction,
+    decAction,
+    resetAction,
+} from './redux/action-creators'
 import { useSelector, useDispatch } from 'react-redux';
+
 
 function App() {
     const counter = useSelector(({ counter }) => counter);
@@ -8,10 +14,10 @@ function App() {
     return (
         <div>
         <h3>{counter}</h3>
-        <button onClick={() => dispatch({type: 'INC'})}>Inc</button>
-        <button onClick={() => dispatch({type: 'INC_CUSTOM', payload: 2})}>Inc Custon</button>
-        <button onClick={() => dispatch({type: 'DEC'})}>Dec</button>
-        <button onClick={() => dispatch({type: 'RESET'})}>Reset</button>
+        <button onClick={() => dispatch(incAction())}>Inc</button>
+        <button onClick={() => dispatch(incCustomAction(2))}>Inc Custon</button>
+        <button onClick={() => dispatch(decAction())}>Dec</button>
+        <button onClick={() => dispatch(resetAction())}>Reset</button>
         </div>
     );
 }
