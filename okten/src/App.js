@@ -13,7 +13,7 @@ function App() {
     const dispatch = useDispatch();
     return (
     <div>
-        {!!(counter % 2) && <PhotoList />}
+        {!(counter % 2) && <PhotoList />}
 
         
         <h3>{counter}</h3>
