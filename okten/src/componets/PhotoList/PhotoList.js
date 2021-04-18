@@ -6,10 +6,12 @@ import {
 } from '../../redux/action-creators';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { counterReducer } from '../../redux/reducers';
 
 export const PhotoList = () => {
     const dispatch = useDispatch();
     const users = useSelector(({userReducer: {users}}) => users);
+    const counter = useSelector(({counterReducer: {counter}}) => counter);
     const badEmployees = useSelector(({userReducer: {badEmployees}}) => badEmployees);
     const fetchPhotos = async () => {
         const response = await fetch('https://dummyapi.io/data/api/user?limit=10', {
@@ -21,10 +23,13 @@ export const PhotoList = () => {
         console.log(json);
         dispatch(userAction(json.data))
     }
+
     useEffect(() => {
-        if(!users.length) {
-            fetchPhotos();
-        }
+        console.log('1');
+
+        //fetchPhotos();
+
+        return () => console.log('2');        
         
     }, [])
 
