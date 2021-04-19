@@ -7,7 +7,7 @@ import {
 
 const initialState = {
     counter: 0,
-    isAllowedToChange: false,
+    isAllowedToChange: true,
 }
  const reducer = (state = initialState, action) => {
     switch (action.type) {

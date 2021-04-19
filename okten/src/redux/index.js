@@ -2,8 +2,6 @@ import { createStore, applyMiddleware } from 'redux';
 import { reducer } from './reducers';
 import {
     INC,
-    INC_CUSTOM,
-    DEC,
     RESET,
 } from './action-types';
 
@@ -19,8 +17,6 @@ const logger = (store) => (next) => (action) => {
 const protectCounter = (store) => (next) => (action) => {
     const actionForCounter = [
         INC,
-        INC_CUSTOM,
-        DEC,
         RESET,
     ]
 
