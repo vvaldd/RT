@@ -6,7 +6,8 @@ import {
 } from '../action-types'
 
 const initialState = {
-    counter: 0
+    counter: 0,
+    isAllowedToChange: false,
 }
  const reducer = (state = initialState, action) => {
     switch (action.type) {
