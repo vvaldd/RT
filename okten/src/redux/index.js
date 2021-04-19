@@ -5,14 +5,14 @@ import {
     RESET,
 } from './action-types';
 
-// const logger = (store) => (next) => (action) => {
-//     console.log(action);
+const logger = (store) => (next) => (action) => {
+    console.log(action);
 
-//     const result = next(action);
-//     console.log('next state', store.getState());
-//     return result
+    const result = next(action);
+    console.log('next state', store.getState());
+    return result
 
-// }
+}
 
 const protectCounter = (store) => (next) => (action) => {
     const actionForCounter = [
@@ -22,7 +22,7 @@ const protectCounter = (store) => (next) => (action) => {
 
     const { isAllowedToChange } = store.getState().counterReducer
     if (!isAllowedToChange && actionForCounter.includes(action.type)) {
-        // console.log('erunda oby4naya');
+        console.log('erunda oby4naya');
         return
     }
 
@@ -37,11 +37,13 @@ const persister = (store) => (next) => (action) => {
     const { counterReducer } = store.getState();
     console.log(counterReducer);
 
+    localStorage.setItem('counter', JSON.stringify(counterReducer));
+
 }
 
 
 
-const middlewares = [protectCounter, persister];
+const middlewares = [protectCounter, /*logger,*/ persister];
 
 export const store = createStore(
     reducer,

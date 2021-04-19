@@ -5,7 +5,10 @@ import {
     RESET,
 } from '../action-types'
 
-const initialState = {
+const initFromLS = localStorage.getItem('counter');
+console.log(initFromLS);
+
+const initialState = initFromLS ? JSON.parse(initFromLS) : {
     counter: 0,
     isAllowedToChange: true,
 }
