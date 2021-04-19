@@ -5,7 +5,7 @@ import {
     resetAction,
 } from './redux/action-creators';
 import { useSelector, useDispatch } from 'react-redux';
-import { PhotoList } from './componets'
+// import { PhotoList } from './componets'
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
     const dispatch = useDispatch();
     return (
     <div>
-        {!(counter % 2) && <PhotoList />}
+        {/* {!(counter % 2) && <PhotoList />} */}
 
         
         <h3>{counter}</h3>

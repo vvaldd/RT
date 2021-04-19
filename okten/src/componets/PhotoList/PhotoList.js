@@ -24,9 +24,9 @@ export const PhotoList = () => {
 
     useEffect(() => {
         
-        if(!users.length) {
-            fetchPhotos();
-        }
+        // if(!users.length) {
+        //     fetchPhotos();
+        // }
         
     }, [])
 

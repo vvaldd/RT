@@ -39,7 +39,6 @@ const initialState = {
         }
 
         default:
-            console.log('action')
             return state;
 
     }
