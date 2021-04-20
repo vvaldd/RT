@@ -7,6 +7,13 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 // import { PhotoList } from './componets'
 
+const Products = () => {
+    const {products, isLoading} = useSelector(store => store.productsReducer)
+console.log(products, isLoading);
+    return (
+        <h3>producs list</h3>
+    )
+}
 
 function App() {
     const counter = useSelector(({ counterReducer: {counter} }) => {
@@ -15,7 +22,7 @@ function App() {
     return (
     <div>
         {/* {!(counter % 2) && <PhotoList />} */}
-
+        <Products />
         
         <h3>{counter}</h3>
         <button onClick={() => dispatch(incAction())}>Inc</button>
