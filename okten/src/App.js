@@ -13,22 +13,7 @@ const Products = () => {
 
     console.log({products, isLoading});
     const dispatch = useDispatch();
-    // const fetchProducts = async () => {
-    //     try {
-    //         dispatch(startProductsAction())
-    //         const resp = await fetch('https://fakestoreapi.com/products');
-    //         const json = await resp.json();
-    //         dispatch(setProductsAction(json));
-
-    //     } catch (e) {
-    //         console.error(e);
-
-    //     } finally {
-    //         dispatch(endProductsAction());
-    //     }
-    // }
-
-
+   
     useEffect(() => {
         dispatch(loadProducts());
 
