@@ -12,6 +12,6 @@ import productsReducer from './products-reducer';
 export const reducer = combineReducers({
     counterReducer,
     userReducer,
-    productsReducer,
+    products: productsReducer,
 })
 

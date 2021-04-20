@@ -8,8 +8,25 @@ const startProductsAction = () => ({type: START_PRODUCTS_LOADING })
 const endProductsAction = () => ({type: END_PRODUCTS_LOADING })
 const setProductsAction = (payload) => ({type: SET_PRODUCTS, payload })
 
+const loadProducts = () => (dispatch) => {
+    
+        try {
+            dispatch(startProductsAction())
+            const resp = await fetch('https://fakestoreapi.com/products');
+            const json = await resp.json();
+            dispatch(setProductsAction(json));
+
+        } catch (e) {
+            console.error(e);
+
+        } finally {
+            dispatch(endProductsAction());
+        }
+    }
+
 export {
     startProductsAction,
     endProductsAction,
     setProductsAction,
+    loadProducts,
 }

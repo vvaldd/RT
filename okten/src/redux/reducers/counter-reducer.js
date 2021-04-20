@@ -6,7 +6,7 @@ import {
 } from '../action-types'
 
 const initFromLS = localStorage.getItem('counter');
-console.log(initFromLS);
+
 
 const initialState = initFromLS ? JSON.parse(initFromLS) : {
     counter: 0,
