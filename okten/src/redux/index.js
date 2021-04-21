@@ -36,15 +36,25 @@ const persister = (store) => (next) => (action) => {
     next(action);
 
     const { counterReducer } = store.getState();
-    
+
 
     localStorage.setItem('counter', JSON.stringify(counterReducer));
 
 }
 
+const customThunk = (store) => (next) => async (action) => {
+    
+    if (typeof action === 'function') {
+        await action(store.dispatch);
+    } else {
+        next(action);
+    }
 
 
-const middlewares = [thunk, protectCounter, /*logger,*/ persister];
+}
+
+
+const middlewares = [thunk/*customThunk*/, protectCounter, /*logger,*/ persister];
 
 export const store = createStore(
     reducer,
