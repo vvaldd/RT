@@ -8,6 +8,10 @@
     flex-wrap: wrap;
 }
 
-.wishlist {
-    background-color: cornsilk
+.yes {
+    background-color: cornsilk;
+}
+
+.no {
+    background-color: white;
 }
