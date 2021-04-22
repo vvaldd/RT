@@ -35,10 +35,11 @@ const persister = (store) => (next) => (action) => {
 
     next(action);
 
-    const { counterReducer } = store.getState();
+    const { cart, wishlist } = store.getState();
 
 
-    localStorage.setItem('counter', JSON.stringify(counterReducer));
+    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
 
 }
 

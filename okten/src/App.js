@@ -5,21 +5,36 @@ import {
     setProductsAction,
     loadProducts,
     toggleItemInCart,
+    toggleItemInWishlist,
 } from './redux/action-creators';
 import { useSelector, useDispatch } from 'react-redux';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 const Header = () => {
+    const { products } = useSelector(store => store.products);
+    const { productsInCart } = useSelector(store => store.cart);
+    const { productsInWishlist } = useSelector(store => store.wishlist);
+    const calculatedCartSum = useMemo(() => {
+        return products.filter(el => productsInCart
+            .includes(el.id))
+            .reduce((acc, el) => acc += el.price, 0)
+    }, [products, productsInCart]);
+
+    const calculatedWishlistSum = useMemo(() => {
+        return products.filter(el => productsInWishlist
+            .includes(el.id))
+            .reduce((acc, el) => acc += el.price, 0)
+    }, [products, productsInWishlist]);
 
     return (
         <header>
             <h1>Header</h1>
             <div className='counters'>
                 <span>
-                    Wishlist: 0
+                    Wishlist: {productsInWishlist.length} ($ {calculatedWishlistSum} )
                 </span>
                 <span>
-                    Cart: 0
+                    Cart: {productsInCart.length} ($ {calculatedCartSum} )
                 </span>
             </div>
         </header>
@@ -29,6 +44,7 @@ const Header = () => {
 const Products = () => {
     const { products, isLoading } = useSelector(store => store.products);
     const { productsInCart } = useSelector(store => store.cart);
+    const { productsInWishlist } = useSelector(store => store.wishlist);
     const dispatch = useDispatch();
 
 
@@ -50,7 +66,9 @@ const Products = () => {
                     <h3>{el.title}</h3>
                     <h4>{el.price}</h4>
                     <h5>{el.description}</h5>
-                    <button>Add to Wishlist</button>
+                    <button style={{ backgroundColor: productsInWishlist.includes(el.id) ? 'cornsilk' : '' }}
+                        onClick={() => dispatch(toggleItemInWishlist(el.id))}>
+                        {productsInWishlist.includes(el.id) ? 'Remove from Wishlist' : 'Add to Wishlist'}</button>
                     <button
                         style={{ backgroundColor: productsInCart.includes(el.id) ? 'cornsilk' : '' }}
                         onClick={() => dispatch(toggleItemInCart(el.id))}>
