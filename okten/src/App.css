@@ -36,24 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  background: cornsilk;
-}
-header span {
-  margin-right: 20px;
-}
-
-.productItem {
-  width: 20%;
-  margin: 20px;
-}
-
-.productWraper {
-display: flex;
-flex-wrap: wrap;
-}
