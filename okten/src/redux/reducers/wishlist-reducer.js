@@ -13,20 +13,17 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_WISHLIST: {
             return {
-                ...state,
-                
+                ...state,                
             }
         }
         case REMOVE_FROM_WISHLIST: {
             return {
-                ...state,
-                
+                ...state,            
             }
         }
 
         default:
             return state;
-
     }
 }
 export default reducer

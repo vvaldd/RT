@@ -28,7 +28,7 @@ const Header = () => {
 
 const Products = () => {
     const { products, isLoading } = useSelector(store => store.products);
-    const { productInCart } = useSelector(store => store.cart);
+    const { productsInCart } = useSelector(store => store.cart);
     const dispatch = useDispatch();
 
 
@@ -51,11 +51,10 @@ const Products = () => {
                     <h4>{el.price}</h4>
                     <h5>{el.description}</h5>
                     <button>Add to Wishlist</button>
-                    <button style={{
-                        background_color: productInCart.includes(el.id) ? 'cornsilk' : ''
-                    }}
+                    <button
+                        style={{ backgroundColor: productsInCart.includes(el.id) ? 'cornsilk' : '' }}
                         onClick={() => dispatch(toggleItemInCart(el.id))}>
-                        {productInCart.includes(el.id) ? 'Remove from Cart' : 'Add to Cart'}
+                        {productsInCart.includes(el.id) ? 'Remove from Cart' : 'Add to Cart'}
                     </button>
                     <img style={{ width: '100%' }} src={el.image} alt={el.title} />
                     <hr />

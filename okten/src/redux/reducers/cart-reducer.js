@@ -14,19 +14,18 @@ const reducer = (state = initialState, action) => {
         case ADD_TO_CART: {
             return {
                 ...state,
-                
+                productsInCart: [...state.productsInCart, action.payload]
             }
         }
         case REMOVE_FROM_CART: {
             return {
                 ...state,
-                
+                productsInCart: state.productsInCart.filter(el => action.payload !== el)
             }
         }
 
         default:
             return state;
-
     }
 }
 export default reducer
