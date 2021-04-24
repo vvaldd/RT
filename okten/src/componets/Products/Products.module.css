@@ -1,17 +1,5 @@
-.productItem {
-    width: 20%;
-    margin: 20px;
-}
-
 .productWraper {
     display: flex;
     flex-wrap: wrap;
 }
 
-.yes {
-    background-color: cornsilk;
-}
-
-.no {
-    background-color: white;
-}
