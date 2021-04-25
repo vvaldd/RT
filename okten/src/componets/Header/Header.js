@@ -14,10 +14,12 @@ export const Header = () => {
     }, [products, productsInCart]);
 
     const calculatedWishlistSum = useMemo(() => {
-        return products.filter(el => productsInWishlist
+        const result = products.filter(el => productsInWishlist
             .includes(el.id))
             .reduce((acc, el) => acc += el.price, 0)
-    }, [products, productsInWishlist]);
+
+        return result.toFixed(2);
+    }, [products, productsInWishlist])
 
     return (
         <header>
