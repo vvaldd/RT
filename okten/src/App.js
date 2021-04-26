@@ -1,16 +1,18 @@
+import React, { useState, useEffect, useRef } from "react";
 import './App.css';
-import { Header, Products } from './componets/'
+
 
 function App() {
 
-    return (
-        <div>
-            <Header />
-
-            <Products />
-
-        </div>
-    );
+  return (
+    <div className="App">
+      
+        <h3>Hi</h3>
+      
+    </div>
+  );
 }
 
 export default App;
+
+
