@@ -1,0 +1,44 @@
+SELECT * FROM `dec-2020`.students;
+-- поиск WHERE
+select * from students where age = 20;
+select name, age from students;
+select * from students where name = 'roman'; 
+select * from  students where name like '%n'; -- команда похожести - like
+select * from students where name like 'o%';
+select * from students where name like '%o%';
+select * from students where name like '___a%';
+select * from students where name like '___a';
+-- сортировка order by
+select * from students order by age;
+select * from students order by age DESC;
+select * from students order by name;
+select * from students order by id;
+select * from students order by gender;
+-- 
+select * from students where gender = 'male' order by age;
+select * from students where length(name) = 4;
+select * from students where age >= 18 order by age;
+select * from students where age <= 15; 
+select * from students where age != 18; --
+select * from students where age <> 18;
+-- поиск в заданых величинах
+select * from students where age between 20 and 30; -- команда 'между' - between
+select * from students where age >= 20 and age <=30;
+select * from students where gender = 'female' and age > 20;
+select * from students where age > 20 or gender like 'f%'; -- команда 'или' - or
+select * from students where age = 18 or (name like 'o%' and gender like 'f%');
+select * from students where age between 20 and 30 or name like 'o%' order by age;
+select * from students where age in(20, 25, 30); -- команда по подбору в четких параметрах - in
+select * from students where name in('ira','ivan','dima');
+select max(age) from students; -- макс. возраст
+select min(age) from students; -- мин. возраст
+select avg(age) from students; -- средний возраст
+select sum(age) from students; -- общий возраст
+select count(age) from students where gender ='male'; -- подсчет количества полей по определенному признаку
+select max(age), gender from students group by gender; -- сортировка по  групповому признаку - group by
+select
+	avg(rating) as avgRat, -- переименование
+    count(rating) as countRat
+from ratings
+where student_id = 5;
+select avg(rating), count(rating) from ratings group by student_id;
