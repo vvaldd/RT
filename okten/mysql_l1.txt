@@ -41,4 +41,12 @@ select
     count(rating) as countRat
 from ratings
 where student_id = 5;
-select avg(rating), count(rating) from ratings group by student_id;
+select avg(rating), count(rating), student_id from ratings group by student_id;
+-- пагинация
+select * from students limit 3;
+select * from students limit 3 offset 3;
+select * from students limit 3 offset 6;
+
+-- обновление
+update students set name = 'Petya' where age < 15 limit 1000;
+SELECT * FROM `dec-2020`.students;
