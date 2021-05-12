@@ -50,3 +50,25 @@ select * from students limit 3 offset 6;
 -- обновление
 update students set name = 'Petya' where age < 15 limit 1000;
 SELECT * FROM `dec-2020`.students;
+
+-- удаление
+delete from students where name = 'kolya' limit 1000;
+SELECT * FROM `dec-2020`.students;
+
+-- practice
+SELECT * FROM students;
+select * from students where gender = 'female';
+select * from students where gender = 'male' and age between 20 and 30;
+select * from students where gender = 'female' and name like '_a%a';
+select avg(age) from students where gender = 'male';
+select max(age), name from students where gender = 'female';
+select * from students limit 3 offset 8;
+select count(id) from students where gender = 'female';
+select count(id) from students where gender = 'male';
+SELECT * FROM students;
+update students set gender = 'female' where name like 'a%' limit 1000;
+update students set name = 'Antonina' where name = 'anton' limit 1000;
+update students set age = '10' where not name like '%a' and gender = 'female' limit 1000;
+delete from students where not age between 25 and 40 limit 1000;
+delete from students where age >= 25 and age <=40 limit 1000;
+delete from students where id in(11, 12);
