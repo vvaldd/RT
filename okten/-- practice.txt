@@ -14,4 +14,3 @@ update students set name = 'Antonina' where name = 'anton' limit 1000;
 update students set age = '10' where not name like '%a' and gender = 'female' limit 1000;
 delete from students where not age between 25 and 40 limit 1000;
 delete from students where age >= 25 and age <=40 limit 1000;
-delete from students where id in(11, 12);
