@@ -72,3 +72,49 @@ update students set age = '10' where not name like '%a' and gender = 'female' li
 delete from students where not age between 25 and 40 limit 1000;
 delete from students where age >= 25 and age <=40 limit 1000;
 delete from students where id in(11, 12);
+
+lesson 2
+insert into cars(model) value ('Aston Martin'); -- добавление данных в таблицу
+insert into cars(model) value ('BMV');
+insert into users(name,car_id) value ('Kolya', 5);
+insert into users(name,car_id) value ('Oleg', 6);
+
+select * from users join cars on users.car_id = cars.id; -- выборка по нескольким таблицам 
+select -- выборка по нескольким таблицам с по заданным столбцам
+	u.name as userName, --  переименование столбцов
+	c.model as carsModel
+from users u -- переименование таблиц в запросе
+join cars c
+on u.car_id = c.id;
+
+select
+	s.name,
+    s.age,
+    l.label,
+    l.date
+from ratings r
+join students s on r.student_id = s.id
+join lesson l on r.lesson_id = l.id
+where rating = 5;
+
+select
+	count(r.rating) as ratingCount,
+    s.name,
+    s.id
+from ratings r
+join students s on r.student_id = s.id
+where r.rating = 5
+group by r.student_id;
+
+select concat(name, '--', age) as fullName, gender from students; -- объеденение информации из нескольких ячеек в одну
+
+select distinct(gender) from students; -- выборка по уникальным именам
+
+select * from students where id in (select student_id from ratings where rating = 5);
+
+select * from users u right join cars c on u.car_id = c.id; -- левый и правый джоины отображают полную таблицу слева или справа от join
+
+
+hw
+SELECT * FROM client where length(firstname) < 6;
+select * from department where DepartmentCity = 'lviv';
