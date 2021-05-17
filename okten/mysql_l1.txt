@@ -118,3 +118,136 @@ select * from users u right join cars c on u.car_id = c.id; -- левый и п�
 hw
 SELECT * FROM client where length(firstname) < 6;
 select * from department where DepartmentCity = 'lviv';
+select * from client where Education = 'high' order by LastName;
+select * from application order by idApplication desc limit 5 offset 10;
+select * from client where lastname like '%ov' or lastname like '%ova'; -- select * from client where lastname like '%ych' or lastname like '%iv';
+select * from client where Department_idDepartment in(select idDepartment from department where DepartmentCity = 'kyiv');
+select firstname, lastname, number from client group by FirstName; -- select firstname, lastname, passport from client group by FirstName; 
+select * -- 8
+from client c
+join application a on c.idClient = a.Client_idClient
+where sum > 5000;
+
+select -- 9
+	count(idclient) as countLviv
+from client c
+join department d on c.Department_idDepartment = d.idDepartment
+where DepartmentCity = 'lviv';
+
+select -- 9
+	count(idclient) as countAll
+from client c
+join department d on c.Department_idDepartment = d.idDepartment;
+
+select -- 10
+	max(sum) as maxSum,
+    c.LastName
+from application a
+join client c on a.Client_idClient = c.idClient
+group by idClient;
+
+select -- 11
+	count(idApplication) as countApl,
+    c.lastname
+from application a
+join client c on a.Client_idClient= c.idClient
+group by idClient;
+
+select max(sum), min(sum) from application; -- 12
+
+select -- 13
+	count(idApplication) as countApl,
+    c.lastname,
+    c.age
+from application a
+join client c on a.Client_idClient= c.idClient
+where Education = 'high'
+group by idClient;
+
+select -- 14
+	avg(sum)
+from application a
+join client c on a.Client_idClient= c.idClient
+group by idClient order by avg(sum) desc limit 1;
+
+select -- 15
+	sum(sum),
+    DepartmentCity,
+    CountOfWorkers
+from department d
+join client c on d.idDepartment = c.Department_idDepartment
+join application a on c.idClient = a.Client_idClient
+group by d.idDepartment order by max(sum) desc limit 1;
+
+select -- 16
+	max(sum),
+    DepartmentCity,
+    CountOfWorkers
+from department d
+join client c on d.idDepartment = c.Department_idDepartment
+join application a on c.idClient = a.Client_idClient
+group by d.idDepartment order by max(sum) desc limit 1;
+
+update application --  17
+join client on application.Client_idClient = client.idclient
+set Sum = 6000
+where application.CreditState = 'Not returned' and client.Education = 'high';
+
+update client c -- 18
+join department d on c.Department_idDepartment = d.idDepartment
+set city = 'Kyiv'
+where d.DepartmentCity = 'Kyiv';
+
+delete from application -- 19
+where CreditState = 'Returned' limit 1000;
+
+SET SQL_SAFE_UPDATES = 0;
+
+delete application -- 20
+from application
+join client c on application.Client_idClient = c.idclient
+where substr(c.lastname, 2, 1) in('e','u','i','o','a');-- where c.LastName like '_[aeiou]%'; не работает
+
+select sum(sum), d.DepartmentCity, idDepartment -- 21
+from application a
+join client c on a.Client_idClient=c.idClient
+join department d on c.Department_idDepartment = d.idDepartment
+where d.DepartmentCity = 'lviv'
+group by idDepartment having sum(sum) > 5000;
+
+select -- 22
+	c.lastname,
+    a.sum
+from client c
+join department d on c.Department_idDepartment = d.idDepartment
+join application a on c.idClient = a.Client_idClient
+where a.CreditState = 'returned' and a.sum > 5000;
+
+select --  23
+	max(sum)
+from application
+where CreditState = 'not returned';
+
+select -- 24
+	min(sum),
+    c.lastname,
+    c.firstname
+from client c
+join department d on c.Department_idDepartment = d.idDepartment
+join application a on c.idClient = a.Client_idClient
+group by c.idClient order by min(sum) limit 1;
+
+select * -- 25
+from application where sum >(select avg(sum) from application); 
+
+select * from client where city = (select -- 26
+	c.city
+from application a
+join client c on c.idClient = a.Client_idClient
+group by a.Client_idClient order by count(idApplication) desc limit 1);
+
+select -- 27
+	c.city
+from application a
+join client c on c.idClient = a.Client_idClient
+group by a.Client_idClient order by count(idApplication) desc limit 1;
